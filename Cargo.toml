@@ -13,6 +13,8 @@ name = "zero2prod"
 [dependencies]
 actix-web = "4"
 config = "0.11.0"
+uuid ={ version = "1", features = ["v4", "serde"] }
+chrono="0.4.15"
 serde = { version = "1", features = ["derive"]}
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 sqlx = { version = "0.8", default-features = false, features = [
