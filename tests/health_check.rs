@@ -1,9 +1,8 @@
 //! tests/health_check.rs
 
+use sqlx::{Connection, PgConnection};
 use std::net::TcpListener;
-use sqlx::{PgConnection, Connection};
 use zero2prod::configuration::get_configuration;
-
 
 #[tokio::test]
 async fn health_check_works() {
