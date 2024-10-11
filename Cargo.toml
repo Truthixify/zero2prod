@@ -24,14 +24,23 @@ uuid ={ version = "1", features = ["v4", "serde"] }
 chrono="0.4.15"
 serde = { version = "1", features = ["derive"]}
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
-sqlx = { version = "0.8", default-features = false, features = [
-    "runtime-tokio-rustls",
+
+[build-dependencies]
+syn = "1"
+
+[dev-dependencies]
+reqwest = "0.11"
+
+
+[dependencies.sqlx]
+version = "0.5.7"
+default-features = false
+features = [
+    "runtime-actix-rustls",
     "macros",
     "postgres",
     "uuid",
     "chrono",
     "migrate",
-] }
-
-[dev-dependencies]
-reqwest = "0.11"
+    "offline"
+]
