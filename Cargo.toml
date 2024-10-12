@@ -24,6 +24,7 @@ uuid ={ version = "1", features = ["v4", "serde"] }
 chrono="0.4.15"
 serde = { version = "1", features = ["derive"]}
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+serde-aux="3"
 
 [build-dependencies]
 syn = "1"

@@ -1,5 +1,4 @@
 #! configuration/base.yaml
-
 application:
   port: 8000
 database:
