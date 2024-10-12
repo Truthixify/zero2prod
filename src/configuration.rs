@@ -2,7 +2,10 @@
 
 use secrecy::{ExposeSecret, Secret};
 use serde_aux::field_attributes::deserialize_number_from_string;
-use sqlx::{postgres::{PgConnectOptions, PgSslMode}, ConnectOptions};
+use sqlx::{
+    postgres::{PgConnectOptions, PgSslMode},
+    ConnectOptions,
+};
 
 #[derive(serde::Deserialize)]
 pub struct Settings {
@@ -12,20 +15,20 @@ pub struct Settings {
 
 #[derive(serde::Deserialize)]
 pub struct ApplicationSettings {
-    #[serde(deserialize_with= "deserialize_number_from_string")]
+    #[serde(deserialize_with = "deserialize_number_from_string")]
     pub port: u16,
-    pub host: String
+    pub host: String,
 }
 
 #[derive(serde::Deserialize)]
 pub struct DatabaseSettings {
     pub username: String,
     pub password: Secret<String>,
-    #[serde(deserialize_with= "deserialize_number_from_string")]
+    #[serde(deserialize_with = "deserialize_number_from_string")]
     pub port: u16,
     pub host: String,
     pub database_name: String,
-    pub require_ssl: bool
+    pub require_ssl: bool,
 }
 
 impl DatabaseSettings {
@@ -33,7 +36,6 @@ impl DatabaseSettings {
         let mut options = self.without_db().database(&self.database_name);
         options.log_statements(tracing::log::LevelFilter::Trace);
         options
-        
     }
 
     pub fn without_db(&self) -> PgConnectOptions {
@@ -64,7 +66,9 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .try_into()
         .expect("Failed to parse APP_ENVIRONMENT");
 
-    settings.merge(config::File::from(configuration_directory.join(environment.as_str())).required(true))?;
+    settings.merge(
+        config::File::from(configuration_directory.join(environment.as_str())).required(true),
+    )?;
 
     settings.merge(config::Environment::with_prefix("APP").separator("__"))?;
 
@@ -72,15 +76,15 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
 }
 
 pub enum Environment {
-    Local, 
-    Production
+    Local,
+    Production,
 }
 
 impl Environment {
     pub fn as_str(&self) -> &'static str {
         match self {
             Environment::Local => "local",
-            Environment::Production => "production"
+            Environment::Production => "production",
         }
     }
 }
@@ -92,7 +96,10 @@ impl TryFrom<String> for Environment {
         match s.to_lowercase().as_str() {
             "local" => Ok(Self::Local),
             "production" => Ok(Self::Production),
-            other => Err(format!("{} is not a supported environment. Use either `local` or `production`.", other))
+            other => Err(format!(
+                "{} is not a supported environment. Use either `local` or `production`.",
+                other
+            )),
         }
     }
 }

@@ -11,11 +11,7 @@ RUN cargo build --release
 FROM debian:bullseye-slim AS runtime
 
 WORKDIR /app
-RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends openssl ca-certificates \
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/list/*
+RUN rust:1.81:0 AS runtime
 COPY --from=builder /app/target/release/zero2prod zero2prod
 COPY configuration configuration
 ENV APP_ENVIRONMENT=production
