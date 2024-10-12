@@ -8,7 +8,7 @@ ENV SQLX_OFFLINE=true
 RUN cargo build --release
 
 # Runtime stage
-FROM rust:1.81:0-slim AS runtime
+FROM rust:1.81.0-slim AS runtime
 
 WORKDIR /app
 COPY --from=builder /app/target/release/zero2prod zero2prod
